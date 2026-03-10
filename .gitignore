@@ -1,0 +1,13 @@
+# 미사용 소스 파일 (배포 불필요)
+airplane image/
+005 movie #1_000/
+KakaoTalk_Photo*.jpeg
+
+# 테스트 스크린샷
+문제 스크린샷/
+
+# Claude 내부 파일
+.claude/
+
+# macOS
+.DS_Store

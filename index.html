@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="SkyGlobal — The exclusive B2B gateway between your education agency and Korea's top universities.">
+  <title>SkyGlobal | Open Korean Universities to the World</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ════════════════════════════════════
+       LOADER
+  ════════════════════════════════════ -->
+  <div id="loader">
+    <div class="loader-brand">SKY<span>GLOBAL</span></div>
+    <div class="loader-bar-track">
+      <div id="loader-bar"></div>
+    </div>
+    <div id="loader-percent">0%</div>
+  </div>
+
+  <!-- ════════════════════════════════════
+       NAVIGATION (fixed, floats above all)
+  ════════════════════════════════════ -->
+  <header class="site-header" id="site-header">
+    <div class="nav-inner">
+      <a href="/" class="nav-logo">
+        <img src="sky%20global%20logo%20fit.png" alt="Sky Global" class="nav-logo-img" height="36">
+      </a>
+      <nav class="nav-links">
+        <a href="javascript:void(0)" class="nav-link" data-scroll-to="1">Join the SkyGlobal Agent</a>
+        <a href="javascript:void(0)" class="nav-cta" data-scroll-to="0.92">Become a Partner</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ════════════════════════════════════
+       HERO — standalone 100vh
+       Circle-wipe reveals canvas as this fades
+  ════════════════════════════════════ -->
+  <section class="hero-standalone" id="hero">
+    <div class="hero-inner">
+      <h1 class="hero-heading">
+        <span class="hero-word">Open</span>
+        <span class="hero-word hero-word--accent">Korean</span>
+        <span class="hero-word">Universities</span>
+        <span class="hero-word">to the World</span>
+      </h1>
+      <span class="hero-eyebrow">001 / SkyGlobal — Official Korean University Representative</span>
+      <p class="hero-tagline">
+        The exclusive B2B gateway between your education agency<br>and Korea's finest universities.
+      </p>
+    </div>
+    <div class="scroll-badge" id="scroll-badge">
+      <svg class="badge-ring" viewBox="0 0 120 120" aria-hidden="true">
+        <defs>
+          <path id="badge-path" d="M60,10 a50,50 0 1,1 -0.01,0"/>
+        </defs>
+        <text class="badge-text">
+          <textPath href="#badge-path">
+            SCROLL TO EXPLORE · SKYGLOBAL · SCROLL TO EXPLORE · SKYGLOBAL ·
+          </textPath>
+        </text>
+      </svg>
+      <span class="badge-icon">↓</span>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════
+       CANVAS — fixed, full viewport
+       Three.js globe renders here.
+       Replace with <video> when ready.
+  ════════════════════════════════════ -->
+  <div id="canvas-wrap">
+    <canvas id="globe-canvas"></canvas>
+  </div>
+
+  <!-- ════════════════════════════════════
+       AIRPLANE CANVAS — fixed, scroll-driven frame animation
+       Visible during 002/Why Korea? section (8–28% scroll)
+  ════════════════════════════════════ -->
+  <canvas id="airplane-canvas"></canvas>
+  <canvas id="reach-canvas"></canvas>
+
+  <!-- ════════════════════════════════════
+       DARK OVERLAY — fixed, for stats section
+  ════════════════════════════════════ -->
+  <div id="dark-overlay"></div>
+
+  <!-- ════════════════════════════════════
+       NETWORK CARDS — fixed left zone
+       003 section: horizontal scroll driven by scroll progress
+  ════════════════════════════════════ -->
+  <div id="network-cards-wrap">
+    <div id="network-cards-strip">
+      <div class="network-card-item">
+        <img src="Silla university card.png" alt="Silla University">
+      </div>
+      <div class="network-card-item">
+        <img src="Dong-a university card.png" alt="Dong-A University">
+      </div>
+      <div class="network-card-item">
+        <img src="sejong university card.png" alt="Sejong University">
+      </div>
+      <div class="network-card-item">
+        <img src="sungkyunkwan university card.png" alt="Sungkyunkwan University">
+      </div>
+      <div class="network-card-item">
+        <img src="Hanseo university card.png" alt="Hanseo University">
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════
+       MARQUEE 1 — university names
+       Visible ~22-42% scroll
+  ════════════════════════════════════ -->
+  <div class="marquee-wrap" id="marquee-1" data-enter="22" data-leave="42" data-scroll-speed="-20">
+    <div class="marquee-text">
+      SKYGLOBAL &nbsp;·&nbsp; SKYGLOBAL &nbsp;·&nbsp; SKYGLOBAL &nbsp;·&nbsp;
+      SKYGLOBAL &nbsp;·&nbsp; SKYGLOBAL &nbsp;·&nbsp; SKYGLOBAL &nbsp;·&nbsp;
+      SKYGLOBAL &nbsp;·&nbsp; SKYGLOBAL &nbsp;·&nbsp; SKYGLOBAL &nbsp;·&nbsp;
+      SKYGLOBAL &nbsp;·&nbsp; SKYGLOBAL &nbsp;·&nbsp; SKYGLOBAL &nbsp;·&nbsp;
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════
+       MARQUEE 2 — value props
+       Visible ~62-80% scroll
+  ════════════════════════════════════ -->
+  <div class="marquee-wrap marquee-lower" id="marquee-2" data-enter="62" data-leave="80" data-scroll-speed="-18">
+    <div class="marquee-text">
+      YOUR COMMISSION &nbsp;·&nbsp; THEIR FUTURE &nbsp;·&nbsp; OPEN DOORS &nbsp;·&nbsp;
+      GLOBAL REACH &nbsp;·&nbsp; EARN MORE &nbsp;·&nbsp; BUILD TRUST &nbsp;·&nbsp;
+      YOUR COMMISSION &nbsp;·&nbsp; THEIR FUTURE &nbsp;·&nbsp; OPEN DOORS &nbsp;·&nbsp;
+      GLOBAL REACH &nbsp;·&nbsp; EARN MORE &nbsp;·&nbsp; BUILD TRUST &nbsp;·&nbsp;
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════
+       SCROLL CONTAINER — 1000vh
+       All content sections live here,
+       absolutely positioned at their midpoints.
+  ════════════════════════════════════ -->
+  <div id="scroll-container">
+
+    <!-- SECTION 1: WHY KOREA — align-left, slide-left -->
+    <section class="scroll-section section-content align-left"
+             id="s-why"
+             data-enter="8" data-leave="28" data-animation="slide-left">
+      <div class="section-inner">
+        <span class="section-label">002 / Why Korea?</span>
+        <h2 class="section-heading">The World's Fastest-Growing Study Destination</h2>
+        <p class="section-body">
+          South Korea combines globally recognized academic credentials with tuition
+          60% lower than the UK, Australia, or US — plus a streamlined student visa
+          and clear post-study work pathways. Demand is accelerating across
+          Southeast Asia, the Middle East, and Africa.
+        </p>
+        <p class="section-note">
+          127,000+ international students enrolled in 2024 — a 34% increase in 3 years.
+        </p>
+      </div>
+    </section>
+
+    <!-- SECTION 2: UNIVERSITY NETWORK — align-right, slide-right -->
+    <section class="scroll-section section-content align-right"
+             id="s-network"
+             data-enter="30" data-leave="58" data-persist="true" data-animation="stagger-up">
+      <div class="section-inner">
+        <span class="section-label">003 / University Partners</span>
+        <h2 class="section-heading">20+ Accredited Partners. Zero Middlemen.</h2>
+        <p class="section-body">
+          Every SkyGlobal partner university is accredited by the Korean Ministry of
+          Education, selected for strong international student support, English-medium
+          programs, and competitive scholarships. You connect directly — we handle the rest.
+        </p>
+        <ul class="section-list">
+          <li>SILLA UNIVERSITY</li>
+          <li>DONG-A UNIVERSITY</li>
+          <li>SEJONG UNIVERSITY</li>
+          <li>SUNGKYUNKWAN UNIVERSITY</li>
+          <li>HANSEO UNIVERSITY</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- SECTION 3: STATS — center, dark overlay, stagger-up -->
+    <section class="scroll-section section-stats"
+             id="s-stats"
+             data-enter="60" data-leave="78" data-animation="stagger-up">
+      <div class="stats-grid">
+        <div class="stat">
+          <div class="stat-number-wrap">
+            <span class="stat-number" data-value="26" data-decimals="0">0</span>
+            <span class="stat-suffix">+</span>
+          </div>
+          <span class="stat-label">Years of Industry Experience</span>
+        </div>
+        <div class="stat">
+          <div class="stat-number-wrap">
+            <span class="stat-number" data-value="4" data-decimals="0">0</span>
+            <span class="stat-suffix"></span>
+          </div>
+          <span class="stat-label">Countries with Local Agents</span>
+        </div>
+        <div class="stat">
+          <div class="stat-number-wrap">
+            <span class="stat-number" data-value="100" data-decimals="0">0</span>
+            <span class="stat-suffix">%</span>
+          </div>
+          <span class="stat-label">MOE Accredited Universities</span>
+        </div>
+        <div class="stat">
+          <div class="stat-number-wrap">
+            <span class="stat-number" data-value="0" data-decimals="0">0</span>
+            <span class="stat-suffix"></span>
+          </div>
+          <span class="stat-label">Joining Fee</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 4: GLOBAL REACH — align-left, fade-up -->
+    <section class="scroll-section section-content align-left"
+             id="s-reach"
+             data-enter="76" data-leave="92" data-animation="fade-up">
+      <div class="section-inner">
+        <span class="section-label">005 / Global Reach</span>
+        <h2 class="section-heading">40+ Markets.<br>One Korean Gateway.</h2>
+        <p class="section-body">
+          Through our established global partner network,
+          SkyGlobal connects students across 40+ countries
+          directly to Korea's top universities.
+          Local expertise. Korean specialist knowledge.<br>
+          No application left behind.
+        </p>
+        <div class="country-list">
+          <span>Thailand</span><span>Türkiye</span><span>Myanmar</span><span>Korea</span>
+          <span>Australia</span><span>UAE</span><span>Nigeria</span><span>Kenya</span>
+          <span>Vietnam</span><span>Nepal</span><span>Malaysia</span><span>Indonesia</span>
+          <span>+ 30 more markets</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 5: CTA — align-right, clip-reveal, PERSIST -->
+    <section class="scroll-section section-content align-right"
+             id="s-cta"
+             data-enter="93" data-leave="100" data-animation="clip-reveal" data-persist="true">
+      <div class="section-inner">
+        <span class="section-label">006 / Get Started</span>
+        <h2 class="section-heading">Ready to Open Korean Doors for Your Students?</h2>
+        <p class="section-body">
+          Join the SkyGlobal agent network at zero cost. Apply in under 5 minutes —
+          our partnership team responds within 72 hours with your dedicated onboarding plan.
+        </p>
+        <a href="mailto:agents@skyglobalstudy.com" class="cta-button">
+          Become a Partner Agent →
+        </a>
+        <p class="section-note">agents@skyglobalstudy.com · WhatsApp available</p>
+      </div>
+    </section>
+
+    <!-- 프로필 카드 패널 — #s-cta와 adjacent sibling, scroll-container 직접 자식 -->
+    <div id="cta-profiles-panel">
+
+      <!-- 슬라이드 1 -->
+      <div class="cta-slide active">
+        <div class="cta-profile-card">
+          <div class="cta-profile-img-wrap">
+            <img src="Skyglobal reps 1.png" alt="Emma Clarke">
+          </div>
+          <div class="cta-profile-info">
+            <p class="cta-profile-name">Bilge Sahin</p>
+            <p class="cta-profile-role">Based in Türkiye</p>
+            <p class="cta-profile-countries">Languages: English, Turkish, Korean</p>
+          </div>
+        </div>
+        <div class="cta-profile-card">
+          <div class="cta-profile-img-wrap">
+            <img src="Skyglobal reps 2.png" alt="May Madi Kyaw">
+          </div>
+          <div class="cta-profile-info">
+            <p class="cta-profile-name">May Madi Kyaw</p>
+            <p class="cta-profile-role">Based in Korea</p>
+            <p class="cta-profile-countries">Languages: English, Myanmar (Burmese), Korean</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 슬라이드 2 -->
+      <div class="cta-slide">
+        <div class="cta-profile-card">
+          <div class="cta-profile-img-wrap">
+            <img src="Nick.jpeg" alt="Kaung San (Nick)">
+          </div>
+          <div class="cta-profile-info">
+            <p class="cta-profile-name">Kaung San (Nick)</p>
+            <p class="cta-profile-role">Based in Thailand</p>
+            <p class="cta-profile-countries">Languages: English, Myanmar (Burmese)</p>
+          </div>
+        </div>
+        <div class="cta-profile-card">
+          <div class="cta-profile-img-wrap">
+            <img src="Firefly 20260310175803.png" alt="Marolyne Achieng Ojwang">
+          </div>
+          <div class="cta-profile-info">
+            <p class="cta-profile-name">Marolyne Achieng Ojwang</p>
+            <p class="cta-profile-role">Based in Kenya</p>
+            <p class="cta-profile-countries">Languages: English, Swahili</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation dots -->
+      <div id="cta-dots">
+        <span class="cta-dot active"></span>
+        <span class="cta-dot"></span>
+      </div>
+
+    </div>
+
+  </div><!-- /#scroll-container -->
+
+  <!-- ════════════════════════════════════
+       SCRIPTS (end of body, this order)
+  ════════════════════════════════════ -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r158/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1/dist/lenis.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+</html>
