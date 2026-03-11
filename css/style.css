@@ -314,6 +314,16 @@ body {
   to   { transform: rotate(360deg); }
 }
 
+/* 모바일 카드 그리드 — PC에서 숨김 */
+.mobile-uni-cards {
+  display: none;
+}
+
+/* 모바일 직원 그리드 — PC에서 숨김 */
+.mobile-staff-grid {
+  display: none;
+}
+
 /* ═══════════════════════════════════════════
    NETWORK CARDS — 003 section left zone
    Fixed horizontal card strip, scroll-driven
@@ -693,6 +703,7 @@ body {
   padding: 1rem 2.5rem;
   margin-top: 2.25rem;
   margin-bottom: 1.5rem;
+  border-radius: 12px;
   transition: background 0.2s ease, transform 0.2s ease;
 }
 
@@ -846,7 +857,7 @@ body {
 ═══════════════════════════════════════════ */
 @media (max-width: 768px) {
   #scroll-container {
-    height: 550vh;
+    height: 650vh;
   }
 
   .align-left,
@@ -884,9 +895,75 @@ body {
     height: 100dvh;
   }
 
-  /* Fix: reach-canvas 숨김 → 005 섹션 침범 방지 */
-  #reach-canvas {
+  /* 모바일: 히어로 제목 오버플로 방지 (3.8rem → 2.8rem) */
+  .hero-heading {
+    font-size: 2.8rem;
+  }
+
+  /* 모바일: 뱃지를 오른쪽 상단으로 이동 */
+  .scroll-badge {
+    bottom: auto;
+    top: 7rem;
+    right: 5vw;
+  }
+
+  /* 모바일: 비행기 캔버스 전체 화면으로 확장 */
+  #airplane-canvas {
+    left: 0;
+  }
+
+  /* 모바일: 002 섹션 배경 반투명 → 비행기가 비쳐 보임 */
+  #s-why .section-inner {
+    background: rgba(255, 255, 255, 0.55);
+  }
+
+  /* 003: fixed 카드 패널 숨김 */
+  #network-cards-wrap {
     display: none;
+  }
+
+  /* 003: 모바일 카드 그리드 표시 */
+  .mobile-uni-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 1.5rem;
+  }
+  .mobile-uni-card img {
+    width: 100%;
+    border-radius: 8px;
+    display: block;
+  }
+
+  /* 006: 모바일 직원 사진 2열 그리드 */
+  .mobile-staff-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 1.5rem;
+  }
+  .mobile-staff-card img {
+    width: 100%;
+    border-radius: 8px;
+    display: block;
+  }
+
+  /* 003: 모바일 pin 고정 해제, top은 JS 원래값(44%) 유지 */
+  #s-network.is-pinned {
+    position: absolute !important;
+  }
+
+  /* 003: 모바일 대학교 목록 볼드 처리 비활성화 */
+  #s-network .section-list li.active {
+    font-weight: inherit;
+    color: inherit;
+    border-left-color: transparent;
+  }
+
+  /* 모바일: reach-canvas 전체 화면으로 표시 */
+  #reach-canvas {
+    left: 0;
+    right: 0;
   }
 
   /* Fix: CTA 프로필 카드 패널 숨김 → 006 텍스트 덮임 방지 */

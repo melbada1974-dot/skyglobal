@@ -344,7 +344,7 @@ function preloadAirplaneFrames() {
   airplaneCanvas = document.getElementById('airplane-canvas');
   if (!airplaneCanvas) return;
   var dpr = Math.min(window.devicePixelRatio, 2);
-  var canvasW = window.innerWidth * 0.55;
+  var canvasW = window.innerWidth <= 768 ? window.innerWidth : window.innerWidth * 0.55;
   airplaneCanvas.width  = canvasW * dpr;
   airplaneCanvas.height = window.innerHeight * dpr;
   airplaneCanvas.style.width  = canvasW + 'px';
@@ -365,7 +365,11 @@ function drawAirplaneFrame(index) {
   var W = airplaneCanvas.width, H = airplaneCanvas.height;
   airplaneCtx.clearRect(0, 0, W, H);
   var IMAGE_SCALE = 0.85; // SKILL.md padded cover mode
-  var scale = Math.max(W / img.naturalWidth, H / img.naturalHeight) * IMAGE_SCALE;
+  var isMobile = window.innerWidth <= 768;
+  var fitScale = isMobile
+    ? Math.min(W / img.naturalWidth, H / img.naturalHeight)
+    : Math.max(W / img.naturalWidth, H / img.naturalHeight);
+  var scale = fitScale * IMAGE_SCALE;
   var dw = img.naturalWidth  * scale;
   var dh = img.naturalHeight * scale;
   airplaneCtx.drawImage(img, (W - dw) / 2, (H - dh) / 2, dw, dh);
@@ -375,7 +379,7 @@ function preloadReachFrames() {
   reachCanvas = document.getElementById('reach-canvas');
   if (!reachCanvas) return;
   var dpr = Math.min(window.devicePixelRatio, 2);
-  var canvasW = window.innerWidth * 0.55;
+  var canvasW = window.innerWidth <= 768 ? window.innerWidth : window.innerWidth * 0.55;
   reachCanvas.width  = canvasW * dpr;
   reachCanvas.height = window.innerHeight * dpr;
   reachCanvas.style.width  = canvasW + 'px';
@@ -466,7 +470,12 @@ function initScrollScene() {
   document.querySelectorAll('.scroll-section').forEach(function(s) {
     var e = parseFloat(s.dataset.enter);
     var l = parseFloat(s.dataset.leave || '100');
-    s.style.top = ((e + l) / 2) + '%';
+    var top = ((e + l) / 2);
+    // 모바일: 005 섹션을 80%로 고정 → 004와 71vh, 006과 107vh 간격 확보
+    if (window.innerWidth <= 768 && s.id === 's-reach') {
+      top = 80;
+    }
+    s.style.top = top + '%';
   });
 
   var SC                = document.getElementById('scroll-container');
@@ -537,13 +546,19 @@ function initScrollScene() {
       if (networkCardsWrap) networkCardsWrap.style.opacity = netOp;
 
       // 오른쪽 텍스트: NET_PIN에서 정확히 핀 고정 (점프 없음), 50-53% fade-out
+      // 모바일에서는 pin/opacity 제어 비활성화 (CSS top 재배치로 대체)
       if (sNetwork) {
-        if (p >= NET_PIN && p <= NET_LEAVE + NET_FADE) {
+        var isMob = window.innerWidth <= 768;
+        if (!isMob && p >= NET_PIN && p <= NET_LEAVE + NET_FADE) {
           sNetwork.classList.add('is-pinned');
         } else {
           sNetwork.classList.remove('is-pinned');
         }
-        sNetwork.style.opacity = (p > NET_LEAVE) ? String(netOp) : '';
+        if (!isMob) {
+          sNetwork.style.opacity = (p > NET_LEAVE) ? String(netOp) : '';
+        } else {
+          sNetwork.style.opacity = '';
+        }
       }
 
       // 순수 스크롤 기반 카드 opacity (GSAP 없음 → 스크롤 속도 무관하게 정확히 동기화)
@@ -646,9 +661,14 @@ function initScrollScene() {
           s.tl.play();
           if (s.el.id === 's-stats') triggerCounters(s.el);
         } else if (!inR && s.active && !s.persist) {
-          s.active = false;
-          s.el.classList.remove('is-active');
-          s.tl.reverse();
+          // 모바일에서 005 섹션은 leave 후에도 사라지지 않게 (타이밍 불일치 방지)
+          if (window.innerWidth <= 768 && s.el.id === 's-reach') {
+            // skip reverse on mobile
+          } else {
+            s.active = false;
+            s.el.classList.remove('is-active');
+            s.tl.reverse();
+          }
         }
       });
     },
@@ -695,11 +715,19 @@ function initScrollScene() {
     }
     if (airplaneCanvas) {
       var dpr = Math.min(window.devicePixelRatio, 2);
-      var canvasW = window.innerWidth * 0.55;
+      var canvasW = window.innerWidth <= 768 ? window.innerWidth : window.innerWidth * 0.55;
       airplaneCanvas.width  = canvasW * dpr;
       airplaneCanvas.height = window.innerHeight * dpr;
       airplaneCanvas.style.width  = canvasW + 'px';
       airplaneCanvas.style.height = window.innerHeight + 'px';
+    }
+    if (reachCanvas) {
+      var dpr = Math.min(window.devicePixelRatio, 2);
+      var canvasW = window.innerWidth <= 768 ? window.innerWidth : window.innerWidth * 0.55;
+      reachCanvas.width  = canvasW * dpr;
+      reachCanvas.height = window.innerHeight * dpr;
+      reachCanvas.style.width  = canvasW + 'px';
+      reachCanvas.style.height = window.innerHeight + 'px';
     }
     ScrollTrigger.refresh();
   }, { passive: true });
