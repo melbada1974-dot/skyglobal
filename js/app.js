@@ -39,7 +39,7 @@ var currentUniIdx = -1;
 
 // ─── NETWORK PIN TIMING ────────────────────────────────────────
 var NET_PIN = 0.40; // recalculated dynamically by calcNetPin()
-var UNI_BREAKS = [0, 0.30, 0.475, 0.65, 0.825, 1.0]; // Silla 30%, 나머지 17.5% 균등
+var UNI_BREAKS = [0, 0.20, 0.3143, 0.4286, 0.5429, 0.6571, 0.7714, 0.8857, 1.0]; // Silla 20%, 나머지 7개 ~11.4% 균등
 
 // ─── CACHED NETWORK DOM ELEMENTS ───────────────────────────────
 var networkCards  = [];
@@ -562,8 +562,8 @@ function initScrollScene() {
       }
 
       // 순수 스크롤 기반 카드 opacity (GSAP 없음 → 스크롤 속도 무관하게 정확히 동기화)
-      var XFADE = 0.020;
-      var XFADE_SILLA = 0.038; // Silla 전용 fade-out (더 긴 전환)
+      var XFADE = 0.008;
+      var XFADE_SILLA = 0.015; // Silla 전용 fade-out (더 긴 전환)
       var totalRange = NET_LEAVE - NET_PIN;
 
       for (var i = 0; i < networkCards.length; i++) {
