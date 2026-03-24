@@ -26,12 +26,7 @@ function doPost(e) {
       data.email || '',
       data.officeAddress || '',
       data.website || '',
-      data.bankAccountName || '',
-      data.bankName || '',
-      data.bankAccountNumber || '',
-      data.bankBsb || '',
-      data.bankSwift || '',
-      data.bankAddress || '',
+      data.universityPartnerships || '',
       data.declaration || ''
     ]);
 
