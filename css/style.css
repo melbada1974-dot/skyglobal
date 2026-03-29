@@ -985,3 +985,85 @@ body {
     animation: none;
   }
 }
+
+/* ════════════════════════════════════
+   PARTNER MODAL STYLES
+   (moved from inline <style> in index.html)
+════════════════════════════════════ */
+#partner-modal-container {
+  font-family: 'Inter', 'Pretendard', sans-serif;
+  color: #2D3436;
+  max-width: 650px;
+  margin: 40px auto;
+  padding: 35px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+  position: relative;
+}
+.pm-close {
+  position: absolute; top: 16px; right: 20px;
+  background: none; border: none; font-size: 28px; color: #636E72;
+  cursor: pointer; line-height: 1;
+}
+.pm-close:hover { color: #2D3436; }
+.pm-header { border-bottom: 2px solid #23508e; padding-bottom: 15px; margin-bottom: 30px; }
+.pm-header h2 { color: #23508e; font-size: 24px; font-weight: 700; margin: 0; }
+.pm-header p { font-size: 14px; color: #636E72; margin-top: 8px; }
+.pm-section-title {
+  font-size: 16px; font-weight: 700; color: #23508e;
+  margin: 30px 0 15px 0; padding-bottom: 5px; border-bottom: 1px solid #eee;
+}
+.pm-input-group { margin-bottom: 20px; }
+.pm-input-group label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: #636E72; }
+.pm-input-group label span { color: #e74c3c; margin-left: 3px; }
+.pm-input-group input, .pm-input-group select, .pm-input-group textarea {
+  width: 100%; padding: 12px 0; border: none; border-bottom: 2px solid #dfe6e9;
+  font-size: 15px; transition: all 0.3s; outline: none; background: transparent; border-radius: 0;
+}
+.pm-input-group textarea { height: 60px; resize: none; }
+.pm-input-group input:focus, .pm-input-group textarea:focus { border-bottom-color: #23508e; }
+.pm-phone-container { display: block; }
+.pm-phone-container select {
+  margin-bottom: 10px; cursor: pointer;
+  appearance: none; -webkit-appearance: none;
+  background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%232D3436%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C/polyline%3E%3C/svg%3E');
+  background-repeat: no-repeat; background-position: right 0px top 50%; background-size: 16px;
+}
+.pm-declaration {
+  margin: 35px 0; padding: 20px; background: #f8f9fa;
+  border-radius: 12px; border: 1px solid #edf2f7;
+}
+.pm-declaration label { display: flex; align-items: flex-start; gap: 12px; cursor: pointer; font-size: 14px; font-weight: 600; }
+.pm-declaration input { transform: scale(1.3); accent-color: #23508e; margin-top: 3px; }
+.pm-submit-btn {
+  width: 100%; padding: 18px; background: #23508e; color: white; border: none;
+  border-radius: 50px; font-size: 17px; font-weight: 700; cursor: pointer;
+  transition: all 0.3s; box-shadow: 0 4px 15px rgba(35,80,142,0.2);
+}
+.pm-submit-btn:hover { background: #1a3d6b; transform: translateY(-1px); }
+#pm-loading { display: none; text-align: center; margin-top: 20px; color: #23508e; font-weight: 600; }
+#pm-success-modal {
+  display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.6); z-index: 10001; align-items: center; justify-content: center;
+}
+.pm-modal-content {
+  background: #fff; padding: 40px; border-radius: 16px; text-align: center;
+  max-width: 400px; width: 90%; box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+  animation: pmFadeUp 0.4s ease;
+}
+@keyframes pmFadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.pm-modal-icon {
+  width: 60px; height: 60px; background: #23508e; color: white; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; font-size: 30px; margin: 0 auto 20px;
+}
+.pm-modal-content h3 { color: #23508e; margin-bottom: 10px; font-size: 20px; }
+.pm-modal-content p { color: #636E72; font-size: 14px; margin-bottom: 25px; line-height: 1.5; }
+.pm-modal-btn {
+  background: #23508e; color: white; border: none; padding: 12px 30px;
+  border-radius: 50px; font-weight: 700; cursor: pointer; transition: 0.3s;
+}
+.pm-modal-btn:hover { background: #1a3d6b; }
