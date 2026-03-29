@@ -953,7 +953,7 @@ try {
   }
 
   // ── Form submission ──
-  var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbylbBTKIRKuVvMdl48Od216AkXVuPrxzlgJpdmkuAUBfAxbpKIpoog2aISeCgX8NJPDLA/exec';
+  var SCRIPT_URL = 'https://skyglobal-form-proxy.melbada1974.workers.dev';
 
   var form = document.getElementById('partner-application-form');
   var submitBtn = document.getElementById('pm-submitBtn');
@@ -972,19 +972,23 @@ try {
 
       fetch(SCRIPT_URL, {
         method: 'POST',
-        mode: 'no-cors',
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
         body: JSON.stringify(payload)
       })
-        .then(function() {
-          document.getElementById('pm-success-modal').style.display = 'flex';
-          form.reset();
+        .then(function(res) { return res.json(); })
+        .then(function(data) {
+          if (data.result === 'success') {
+            document.getElementById('pm-success-modal').style.display = 'flex';
+            form.reset();
+          } else {
+            alert('Submission failed: ' + (data.message || 'Please try again.'));
+          }
           submitBtn.style.display = 'block';
           loadingEl.style.display = 'none';
         })
         .catch(function(err) {
           console.error('Form submission error:', err);
-          alert('Error occurred. Please try again.');
+          alert('네트워크 오류가 발생했습니다. 인터넷 연결을 확인한 후 다시 시도해주세요.');
           submitBtn.style.display = 'block';
           loadingEl.style.display = 'none';
         });
