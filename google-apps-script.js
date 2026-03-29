@@ -11,6 +11,41 @@ function doPost(e) {
 
     var data = JSON.parse(e.postData.contents);
 
+    // ── 입력값 검증 ──────────────────────────────
+    var errors = [];
+
+    // 필수 필드 확인
+    if (!data.companyName || String(data.companyName).trim() === '') {
+      errors.push('Company name is required');
+    }
+    if (!data.firstName || String(data.firstName).trim() === '') {
+      errors.push('First name is required');
+    }
+    if (!data.lastName || String(data.lastName).trim() === '') {
+      errors.push('Last name is required');
+    }
+    if (!data.email || String(data.email).trim() === '') {
+      errors.push('Email is required');
+    }
+    if (!data.phoneNumber || String(data.phoneNumber).trim() === '') {
+      errors.push('Phone number is required');
+    }
+
+    // 이메일 형식 검증
+    if (data.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(data.email))) {
+      errors.push('Invalid email format');
+    }
+
+    // 검증 실패 시 에러 반환
+    if (errors.length > 0) {
+      return ContentService
+        .createTextOutput(JSON.stringify({ result: 'error', message: errors.join(', ') }))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+
+    // ── 입력값 정제 (XSS 방지) ──────────────────
+    data = sanitizeData(data);
+
     // 시트에 데이터 추가
     sheet.appendRow([
       new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' }), // Timestamp
@@ -93,6 +128,26 @@ function sendWelcomeEmail(data) {
   };
 
   GmailApp.sendEmail(data.email, subject, '', options);
+}
+
+// ── 입력값 정제 함수 (XSS 방지) ──────────────────
+function sanitizeString(str) {
+  if (!str) return '';
+  return String(str)
+    .trim()
+    .substring(0, 500)
+    .replace(/[<>]/g, function(c) {
+      return c === '<' ? '&lt;' : '&gt;';
+    });
+}
+
+function sanitizeData(data) {
+  var cleaned = {};
+  var keys = Object.keys(data);
+  for (var i = 0; i < keys.length; i++) {
+    cleaned[keys[i]] = sanitizeString(data[keys[i]]);
+  }
+  return cleaned;
 }
 
 // 테스트용 함수 — Apps Script 에디터에서 실행해서 이메일 테스트 가능
