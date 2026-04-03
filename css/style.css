@@ -991,6 +991,8 @@ body {
    FOOTER
 ════════════════════════════════════ */
 .site-footer {
+  position: relative;
+  z-index: 5;
   text-align: center;
   padding: 4rem 2rem 3rem;
   background: #ffffff;
