@@ -39,7 +39,7 @@ var currentUniIdx = -1;
 
 // ─── NETWORK PIN TIMING ────────────────────────────────────────
 var NET_PIN = 0.40; // recalculated dynamically by calcNetPin()
-var UNI_BREAKS = [0, 0.20, 0.3143, 0.4286, 0.5429, 0.6571, 0.7714, 0.8857, 1.0]; // Silla 20%, 나머지 7개 ~11.4% 균등
+var UNI_BREAKS = [0, 0.18, 0.2825, 0.385, 0.4875, 0.59, 0.6925, 0.795, 0.8975, 1.0]; // Silla 18%, 나머지 8개 ~10.25% 균등
 
 // ─── CACHED NETWORK DOM ELEMENTS ───────────────────────────────
 var networkCards  = [];
@@ -496,8 +496,11 @@ function initScrollScene() {
     var type    = el.dataset.animation || 'fade-up';
     var kids    = el.querySelectorAll('.section-label,.section-heading,.section-body,.section-note,.section-list,.country-list,.stat,.cta-button');
     var tl      = gsap.timeline({ paused: true });
-    buildTimeline(tl, type, kids);
-    SECTIONS.push({ el: el, enter: enter, leave: leave, persist: persist, tl: tl, active: false });
+    // 002(s-why), 005(s-reach): 페이드 효과 없이 텍스트 항상 표시
+    var noAnim = (el.id === 's-why' || el.id === 's-reach');
+    if (!noAnim) buildTimeline(tl, type, kids);
+    if (noAnim) { tl.set(Array.from(kids), { opacity: 1, y: 0, clipPath: 'none' }); }
+    SECTIONS.push({ el: el, enter: enter, leave: leave, persist: persist, tl: tl, active: false, noAnim: noAnim });
   });
 
   // ── Cache network card/list DOM elements ────────────────────────
@@ -527,16 +530,16 @@ function initScrollScene() {
       // Circle-wipe reveal (0→6% scroll = 0→80% radius)
       cWrap.style.clipPath = 'circle(' + (Math.min(1, p / 0.06) * 80) + '% at 50% 50%)';
 
-      // Dark overlay (stats 60–78%)
+      // Dark overlay (stats 68–86%)
       var op = 0;
-      if      (p >= 0.57 && p < 0.60) op = (p - 0.57) / 0.03;
-      else if (p >= 0.60 && p <= 0.78) op = 0.92;
-      else if (p > 0.78 && p <= 0.81) op = 0.92 * (1 - (p - 0.78) / 0.03);
+      if      (p >= 0.65 && p < 0.68) op = (p - 0.65) / 0.03;
+      else if (p >= 0.68 && p <= 0.86) op = 0.92;
+      else if (p > 0.86 && p <= 0.89) op = 0.92 * (1 - (p - 0.86) / 0.03);
       dOver.style.opacity = op;
 
       // Network cards (003 section)
       // NET_PIN: dynamically calculated (exact p when #s-network is at viewport center)
-      var NET_LEAVE = 0.58, NET_FADE = 0.03;
+      var NET_LEAVE = 0.66, NET_FADE = 0.03;
 
       // 카드 래퍼: NET_PIN부터 fade-in, 50-53% fade-out
       var netOp = 0;
@@ -607,7 +610,7 @@ function initScrollScene() {
       }
 
       // Airplane frames (why section: 8–28%)
-      var AIR_ENTER = 0.08, AIR_LEAVE = 0.28, AIR_FADE = 0.05, AIR_FADE_OUT = 0.04;
+      var AIR_ENTER = 0.08, AIR_LEAVE = 0.20, AIR_FADE = 0.02, AIR_FADE_OUT = 0.04;
       var airOp = 0;
       if      (p >= AIR_ENTER - AIR_FADE && p < AIR_ENTER)        airOp = (p - (AIR_ENTER - AIR_FADE)) / AIR_FADE;
       else if (p >= AIR_ENTER && p <= AIR_LEAVE)                   airOp = 1;
@@ -620,8 +623,8 @@ function initScrollScene() {
         drawAirplaneFrame(Math.floor(accelerated * AIRPLANE_TOTAL));
       }
 
-      // Reach frames (005 section: 76–92%)
-      var REACH_ENTER = 0.82, REACH_LEAVE = 0.92, REACH_FADE = 0.03;
+      // Reach frames (005 section: 84–96%)
+      var REACH_ENTER = 0.88, REACH_LEAVE = 0.96, REACH_FADE = 0.03;
       var reachOp = 0;
       if      (p >= REACH_ENTER - REACH_FADE && p < REACH_ENTER)       reachOp = (p - (REACH_ENTER - REACH_FADE)) / REACH_FADE;
       else if (p >= REACH_ENTER && p <= REACH_LEAVE)                    reachOp = 1;
@@ -635,9 +638,9 @@ function initScrollScene() {
       // Globe state
       if      (p < 0.10) transitionGlobe('hero');
       else if (p < 0.32) transitionGlobe('why');
-      else if (p < 0.60) transitionGlobe('network');
-      else if (p < 0.76) transitionGlobe('stats');
-      else if (p < 0.92) transitionGlobe('reach');
+      else if (p < 0.68) transitionGlobe('network');
+      else if (p < 0.84) transitionGlobe('stats');
+      else if (p < 0.97) transitionGlobe('reach');
       else               transitionGlobe('cta');
 
       // Marquee opacity
@@ -658,12 +661,12 @@ function initScrollScene() {
         if (inR && !s.active) {
           s.active = true;
           s.el.classList.add('is-active');
-          s.tl.play();
+          if (!s.noAnim) s.tl.play();
           if (s.el.id === 's-stats') triggerCounters(s.el);
         } else if (!inR && s.active && !s.persist) {
-          // 모바일에서 005 섹션은 leave 후에도 사라지지 않게 (타이밍 불일치 방지)
-          if (window.innerWidth <= 768 && s.el.id === 's-reach') {
-            // skip reverse on mobile
+          if (s.noAnim) {
+            // 002, 005: 페이드 없이 is-active만 토글
+            s.active = false;
           } else {
             s.active = false;
             s.el.classList.remove('is-active');

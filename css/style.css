@@ -465,12 +465,12 @@ body {
 }
 
 /* ═══════════════════════════════════════════
-   SCROLL CONTAINER — 1000vh
+   SCROLL CONTAINER — 1100vh
    Sections are absolutely positioned within
 ═══════════════════════════════════════════ */
 #scroll-container {
   position: relative;
-  height: 1000vh;
+  height: 1100vh;
 }
 
 /* ═══════════════════════════════════════════
@@ -721,7 +721,7 @@ body {
 #cta-profiles-panel {
   position: absolute;
   left: 0;
-  top: 96.5%;              /* (93 + 100) / 2 */
+  top: 98.5%;              /* (97 + 100) / 2 */
   width: 55vw;
   height: 72vh;
   transform: translateY(-50%);
