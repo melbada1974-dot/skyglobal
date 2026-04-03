@@ -471,9 +471,13 @@ function initScrollScene() {
     var e = parseFloat(s.dataset.enter);
     var l = parseFloat(s.dataset.leave || '100');
     var top = ((e + l) / 2);
-    // 모바일: 005 섹션을 80%로 고정 → 004와 71vh, 006과 107vh 간격 확보
-    if (window.innerWidth <= 768 && s.id === 's-reach') {
-      top = 80;
+    // 모바일: 섹션 위치 + data-enter/leave 오버라이드 (680vh 기준)
+    if (window.innerWidth <= 768) {
+      if (s.id === 's-why')     { top = 14; s.dataset.enter = '6';  s.dataset.leave = '22'; }
+      if (s.id === 's-network') { top = 36; s.dataset.enter = '24'; s.dataset.leave = '50'; }
+      if (s.id === 's-stats')   { top = 58; s.dataset.enter = '50'; s.dataset.leave = '68'; }
+      if (s.id === 's-reach')   { top = 76; s.dataset.enter = '68'; s.dataset.leave = '84'; }
+      if (s.id === 's-cta')     { top = 92; s.dataset.enter = '86'; s.dataset.leave = '100'; }
     }
     s.style.top = top + '%';
   });
@@ -497,7 +501,7 @@ function initScrollScene() {
     var kids    = el.querySelectorAll('.section-label,.section-heading,.section-body,.section-note,.section-list,.country-list,.stat,.cta-button');
     var tl      = gsap.timeline({ paused: true });
     // 002(s-why), 005(s-reach): 페이드 효과 없이 텍스트 항상 표시
-    var noAnim = (el.id === 's-why' || el.id === 's-reach');
+    var noAnim = (el.id === 's-why' || el.id === 's-network' || el.id === 's-reach' || el.id === 's-cta');
     if (!noAnim) buildTimeline(tl, type, kids);
     if (noAnim) { tl.set(Array.from(kids), { opacity: 1, y: 0, clipPath: 'none' }); }
     SECTIONS.push({ el: el, enter: enter, leave: leave, persist: persist, tl: tl, active: false, noAnim: noAnim });
@@ -530,11 +534,16 @@ function initScrollScene() {
       // Circle-wipe reveal (0→6% scroll = 0→80% radius)
       cWrap.style.clipPath = 'circle(' + (Math.min(1, p / 0.06) * 80) + '% at 50% 50%)';
 
-      // Dark overlay (stats 68–86%)
+      // Dark overlay (stats section)
+      var mobView = window.innerWidth <= 768;
+      var dkEnter = mobView ? 0.48 : 0.65;
+      var dkFull  = mobView ? 0.50 : 0.68;
+      var dkEnd   = mobView ? 0.68 : 0.86;
+      var dkFade  = 0.03;
       var op = 0;
-      if      (p >= 0.65 && p < 0.68) op = (p - 0.65) / 0.03;
-      else if (p >= 0.68 && p <= 0.86) op = 0.92;
-      else if (p > 0.86 && p <= 0.89) op = 0.92 * (1 - (p - 0.86) / 0.03);
+      if      (p >= dkEnter && p < dkFull)         op = (p - dkEnter) / (dkFull - dkEnter);
+      else if (p >= dkFull && p <= dkEnd)           op = 0.92;
+      else if (p > dkEnd && p <= dkEnd + dkFade)    op = 0.92 * (1 - (p - dkEnd) / dkFade);
       dOver.style.opacity = op;
 
       // Network cards (003 section)
@@ -623,8 +632,10 @@ function initScrollScene() {
         drawAirplaneFrame(Math.floor(accelerated * AIRPLANE_TOTAL));
       }
 
-      // Reach frames (005 section: 84–96%)
-      var REACH_ENTER = 0.88, REACH_LEAVE = 0.96, REACH_FADE = 0.03;
+      // Reach frames (005 section)
+      var REACH_ENTER = mobView ? 0.70 : 0.88;
+      var REACH_LEAVE = mobView ? 0.84 : 0.96;
+      var REACH_FADE = 0.03;
       var reachOp = 0;
       if      (p >= REACH_ENTER - REACH_FADE && p < REACH_ENTER)       reachOp = (p - (REACH_ENTER - REACH_FADE)) / REACH_FADE;
       else if (p >= REACH_ENTER && p <= REACH_LEAVE)                    reachOp = 1;
@@ -636,12 +647,21 @@ function initScrollScene() {
       }
 
       // Globe state
-      if      (p < 0.10) transitionGlobe('hero');
-      else if (p < 0.32) transitionGlobe('why');
-      else if (p < 0.68) transitionGlobe('network');
-      else if (p < 0.84) transitionGlobe('stats');
-      else if (p < 0.97) transitionGlobe('reach');
-      else               transitionGlobe('cta');
+      if (mobView) {
+        if      (p < 0.06) transitionGlobe('hero');
+        else if (p < 0.24) transitionGlobe('why');
+        else if (p < 0.50) transitionGlobe('network');
+        else if (p < 0.68) transitionGlobe('stats');
+        else if (p < 0.86) transitionGlobe('reach');
+        else               transitionGlobe('cta');
+      } else {
+        if      (p < 0.10) transitionGlobe('hero');
+        else if (p < 0.32) transitionGlobe('why');
+        else if (p < 0.68) transitionGlobe('network');
+        else if (p < 0.84) transitionGlobe('stats');
+        else if (p < 0.97) transitionGlobe('reach');
+        else               transitionGlobe('cta');
+      }
 
       // Marquee opacity
       document.querySelectorAll('.marquee-wrap').forEach(function(el) {

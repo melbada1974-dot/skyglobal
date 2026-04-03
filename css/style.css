@@ -857,7 +857,7 @@ body {
 ═══════════════════════════════════════════ */
 @media (max-width: 768px) {
   #scroll-container {
-    height: 650vh;
+    height: 680vh;
   }
 
   .align-left,
@@ -970,6 +970,7 @@ body {
   #cta-profiles-panel {
     display: none;
   }
+
 }
 
 /* ═══════════════════════════════════════════
@@ -983,6 +984,60 @@ body {
 
   .scroll-arrow {
     animation: none;
+  }
+}
+
+/* ════════════════════════════════════
+   FOOTER
+════════════════════════════════════ */
+.site-footer {
+  text-align: center;
+  padding: 4rem 2rem 3rem;
+  background: #ffffff;
+  color: #333;
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+.footer-philosophy {
+  font-size: 1.1rem;
+  font-style: italic;
+  color: #23508e;
+  margin-bottom: 2rem;
+  letter-spacing: 0.02em;
+}
+.footer-links {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+.footer-email {
+  color: #333;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+.footer-email:hover { color: #23508e; }
+.footer-insta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #333;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+.footer-insta:hover { color: #23508e; }
+.footer-copy {
+  font-size: 0.75rem;
+  color: #999;
+  margin: 0;
+}
+
+/* PC에서만 푸터 상단 여백 — 006 섹션과 분리 */
+@media (min-width: 769px) {
+  .site-footer {
+    margin-top: 15vh;
   }
 }
 
